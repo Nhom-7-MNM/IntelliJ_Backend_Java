@@ -2,15 +2,25 @@ package com.example.healthfitness.dto.request;
 
 
 
+import jakarta.validation.constraints.Size;
+
 import java.util.Date;
+
 
 
 public class UserCreationRequest {
 
+
+
+
     private String fullName;
     private String email;
     private String phone;
+
+    @Size(min = 8, message = "PASSWORD phải có 8 ký tự")
     private String password;
+
+
     private String role;
     private Date createdAt;
     private Date updatedAt;

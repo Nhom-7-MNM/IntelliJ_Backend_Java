@@ -1,15 +1,19 @@
 package com.example.healthfitness.controller;
 
 
+import com.example.healthfitness.dto.request.ApiResponse;
 import com.example.healthfitness.dto.request.UserCreationRequest;
 import com.example.healthfitness.dto.request.UserUpdateRequest;
 import com.example.healthfitness.entity.User;
 import com.example.healthfitness.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+@Validated
 @CrossOrigin(origins = "http://localhost:3000") // Cho phép React gọi API
 @RestController
 @RequestMapping("/Users")
@@ -19,13 +23,12 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody UserCreationRequest request) {
-        try {
-            User user = userService.createUser(request);
-            return ResponseEntity.ok(user);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Email đã tồn tại");
-        }
+    ApiResponse<User> createUser(@RequestBody @Valid UserCreationRequest request) {
+        ApiResponse<User> apiResponse = new ApiResponse<>();
+
+        apiResponse.setResult(userService.createUser(request));
+
+        return apiResponse;
     }
 
     @GetMapping
