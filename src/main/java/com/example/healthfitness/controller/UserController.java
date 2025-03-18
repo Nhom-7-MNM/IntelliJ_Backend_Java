@@ -6,6 +6,7 @@ import com.example.healthfitness.dto.request.UserUpdateRequest;
 import com.example.healthfitness.entity.User;
 import com.example.healthfitness.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,9 +19,13 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    User createUser(@RequestBody UserCreationRequest request) {
-
-       return userService.createUser(request);
+    public ResponseEntity<?> createUser(@RequestBody UserCreationRequest request) {
+        try {
+            User user = userService.createUser(request);
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Email đã tồn tại");
+        }
     }
 
     @GetMapping
